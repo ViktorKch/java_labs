@@ -1,4 +1,3 @@
-
 package java_laba_2;
 
 import java.awt.Color;

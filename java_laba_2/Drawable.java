@@ -65,8 +65,6 @@ abstract public class Drawable implements Serializable {
     public float rectX2() { return centerX + animW/2;}
     public float rectY2() { return centerY + animH/2;}
 
-
-
     protected Color color = Color.RED;
 
 }

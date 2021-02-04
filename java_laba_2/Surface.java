@@ -4,19 +4,23 @@ package java_laba_2;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Surface extends javax.swing.JPanel implements MouseListener, KeyListener {
+public class Surface extends javax.swing.JPanel implements MouseListener, KeyListener, ActionListener {
 
-    private ArrayList<Drawable> objects = new ArrayList<>();
-    public long timestep = 1000/60;
+
+    private  Timer timer = new Timer(15, this);
+    Surface()
+    {
+        timer.start();
+        this.setBackground(new Color(255, 255, 255));
+    }
+    public ArrayList<Drawable> objects = new ArrayList<>();
     private long prev_t = 0;
 
     void DrawObjects(Graphics g)
@@ -24,15 +28,14 @@ public class Surface extends javax.swing.JPanel implements MouseListener, KeyLis
         Graphics2D g2d = (Graphics2D) g;
 
         long t = System.currentTimeMillis();
-        while (t-prev_t < timestep) t = System.currentTimeMillis();
 
         float dt = (float)(t-prev_t)/1000.f;
         for (Drawable o : objects)
         {
-            ThreadedDrawable td = new ThreadedDrawable(o,dt);
-            td.start();
-            try { td.join(); } catch(Exception ex) {}
-            g2d.drawImage(td.get(), 0, 0, null);
+            g2d.setPaint(o.color);
+            o.Draw(g2d, dt);
+            o.DrawRect(g2d);
+
         }
 
         prev_t = t;
@@ -72,8 +75,8 @@ public class Surface extends javax.swing.JPanel implements MouseListener, KeyLis
     @Override
     public void mouseClicked(MouseEvent e) {
 
-        int x = e.getX() - 10;
-        int y = e.getY() - 40;
+        int x = e.getX() ;
+        int y = e.getY() ;
 
         if (e.getButton() == MouseEvent.BUTTON1)
         {
@@ -115,8 +118,7 @@ public class Surface extends javax.swing.JPanel implements MouseListener, KeyLis
     {
         System.out.println("SAVING AS TEXT");
         try {
-
-            BufferedWriter bwriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "UTF-8"));
+            BufferedWriter bwriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("text.txt"), "UTF-8"));
             int count = objects.size();
             bwriter.write(Integer.toString(count) + '\n');
             for (Drawable o : objects)
@@ -136,7 +138,7 @@ public class Surface extends javax.swing.JPanel implements MouseListener, KeyLis
         System.out.println("LOADING FROM TEXT");
         try {
             objects.clear();
-            BufferedReader breader = new BufferedReader(new InputStreamReader(new FileInputStream(filename), "UTF-8"));
+            BufferedReader breader = new BufferedReader(new InputStreamReader(new FileInputStream("text.txt"), "UTF-8"));
             String scount = breader.readLine();
             int count = Integer.parseInt(scount);
             System.out.println(Integer.toString(count));
@@ -276,5 +278,12 @@ public class Surface extends javax.swing.JPanel implements MouseListener, KeyLis
     @Override
     public void keyReleased(KeyEvent e) {
     }
-
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == timer)
+        {
+            // System.out.println("UPDATE");
+            Update();
+        }
+    }
 }

@@ -46,6 +46,8 @@ public class SmileUnhappy extends Drawable implements Serializable {
                 (int)(rectX1()+ rectWidth *(1-1.5*margin)),
                 (int)(rectY1()+ 2*rectHeight*margin));
         g2d.setPaint(c);
+        AffineTransform at = new AffineTransform();
+        g2d.setTransform(at);
 
     }
 

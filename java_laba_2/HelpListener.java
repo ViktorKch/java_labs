@@ -8,7 +8,6 @@ package java_laba_2;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-
 public class HelpListener implements WindowListener {
 
     @Override
