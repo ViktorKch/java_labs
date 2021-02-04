@@ -1,61 +1,61 @@
-
 package java_laba_2;
 
+import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java_laba_2.Protocol.QueryData;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Client extends Thread {
 
-    public Socket socket;
+    public DatagramSocket socket;
     private boolean stoped = false;
     public Surface surface;
-    private void Stop() { stoped = true;}
-    Client(Surface s,  String ip, int port)
-    {
+    private int portIn, portOut;
+
+    private void Stop() {
+        stoped = true;
+    }
+
+    Client(Surface s, String ip, int port_out, int port_in) {
         surface = s;
+        portIn = port_in;
+        portOut = port_out;
         try {
-            socket = new Socket(ip, port);
-            System.out.println("### CLIENT: started - " + ip + ':' + port);
+            socket = new DatagramSocket(port_in, InetAddress.getByName(ip));
+            socket.setSoTimeout(10000);
+            System.out.println("### CLIENT: started - " + ip + ':' + port_in);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (Exception e) { e.printStackTrace(); }
         setDaemon(true);
         setPriority(NORM_PRIORITY);
     }
 
     @Override
-    public void run()
-    {
-        while (stoped!=true)
+    public void run() {
+        while (stoped != true) {
             try {
-                if (!socket.isClosed())
-                {
-                    QueryData q = Protocol.ListenServer(socket);
+                Thread.sleep(100);
+                byte data[] = new byte[4096];
+                DatagramPacket pac = new DatagramPacket(data, data.length);
 
-                    switch(q.code)
-                    {
-                        case(Protocol.SEND_LIST_SIZE):
-                        {
-                            Log.ln("CLIENT: got list size - " + (Integer)q.data);
-                        } break;
-                        case(Protocol.SEND_OBJECT):
-                        {
-                            int index = ((QueryData)q.data).code;
-                            Drawable obj = (Drawable)((QueryData)q.data).data;
-                            surface.objects.add(index, obj);
-                            Log.ln("CLIENT: got object at " + index);
-                        }
-                        break;
-                        case(Protocol.SEND_ALL_OBJECTS):
-                        {
-                            surface.objects = (ArrayList<Drawable>)q.data;
-                            Log.ln("CLIENT: got all objects");
-                        } break;
-                        //default: Log.ln("CLIENT: unknown command"); break;
-                    }
-                } else break;
-            } catch (Exception e) { Stop();}
+                socket.receive(pac);
+
+                ByteArrayInputStream bis = new ByteArrayInputStream(data);
+                ObjectInput in;
+
+                in = new ObjectInputStream(bis);
+                surface.objects = ( CopyOnWriteArrayList<Drawable>) in.readObject();
+                bis.close();
+                in.close();
+
+            } catch (SocketTimeoutException ste) {
+                Log.ln("CLIENT : timeout");
+                break;
+            } catch (Exception e) {
+                e.printStackTrace();
+                Stop();
+            }
+        }
         Log.ln("CLIENT: stop running");
     }
 }
-

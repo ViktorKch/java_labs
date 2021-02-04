@@ -5,11 +5,11 @@
  */
 package java_laba_2;
 
-public class MainJFrame extends javax.swing.JFrame  {
+public class MainJFrame extends javax.swing.JFrame {
 
     Surface s;
     Client c;
-    //private final Timer timer = new Timer(30, this);
+
     public MainJFrame() {
         initComponents();
 
@@ -24,12 +24,6 @@ public class MainJFrame extends javax.swing.JFrame  {
         s.setVisible(true);
         pack();
 
-        clearButton.setEnabled(false);
-        closeConnectionButton.setEnabled(false);
-        getAllObjectsButton.setEnabled(false);
-        getObjectButton.setEnabled(false);
-        getObjectCountButton.setEnabled(false);
-        objectCountEdit.setEnabled(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -40,16 +34,13 @@ public class MainJFrame extends javax.swing.JFrame  {
         hostLabel = new javax.swing.JLabel();
         hostEdit = new javax.swing.JTextField();
         portLabel = new javax.swing.JLabel();
-        portEdit = new javax.swing.JTextField();
-        startConnectionButton = new javax.swing.JButton();
-        closeConnectionButton = new javax.swing.JButton();
-        getObjectButton = new javax.swing.JButton();
-        objectCountEdit = new javax.swing.JTextField();
-        getObjectCountButton = new javax.swing.JButton();
-        launchServerButton = new javax.swing.JButton();
+        portInputEdit = new javax.swing.JTextField();
+        startClientButton = new javax.swing.JButton();
+        startServerButton = new javax.swing.JButton();
         statusLabel = new javax.swing.JLabel();
-        getAllObjectsButton = new javax.swing.JButton();
-        clearButton = new javax.swing.JButton();
+        portOutputEdit = new javax.swing.JTextField();
+        portOutput = new javax.swing.JLabel();
+        swapPortsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
@@ -75,63 +66,37 @@ public class MainJFrame extends javax.swing.JFrame  {
 
         hostEdit.setText("localhost");
 
-        portLabel.setText("port");
+        portLabel.setText("port (input)");
 
-        portEdit.setText("8888");
-        portEdit.setToolTipText("");
+        portInputEdit.setText("7001");
+        portInputEdit.setToolTipText("");
 
-        startConnectionButton.setText("Start connection");
-        startConnectionButton.addActionListener(new java.awt.event.ActionListener() {
+        startClientButton.setText("Start client");
+        startClientButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startConnectionButtonActionPerformed(evt);
+                startClientButtonActionPerformed(evt);
             }
         });
 
-        closeConnectionButton.setText("Close connection");
-        closeConnectionButton.addActionListener(new java.awt.event.ActionListener() {
+        startServerButton.setText("Start server");
+        startServerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeConnectionButtonActionPerformed(evt);
-            }
-        });
-
-        getObjectButton.setText("Get object");
-        getObjectButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getObjectButtonActionPerformed(evt);
-            }
-        });
-
-        objectCountEdit.setText("0");
-
-        getObjectCountButton.setText("Get objects count");
-        getObjectCountButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getObjectCountButtonActionPerformed(evt);
-            }
-        });
-
-        launchServerButton.setText("Launch server");
-        launchServerButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                launchServerButtonActionPerformed(evt);
+                startServerButtonActionPerformed(evt);
             }
         });
 
         statusLabel.setFont(new java.awt.Font("Source Sans Pro", 1, 18)); // NOI18N
-        statusLabel.setText("CLIENT");
+        statusLabel.setText("OFFLINE");
 
-        getAllObjectsButton.setText("Get all objects");
-        getAllObjectsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAllObjectsButtonActionPerformed(evt);
-            }
-        });
+        portOutputEdit.setText("7002");
+        portOutputEdit.setToolTipText("");
 
-        clearButton.setActionCommand("cvc");
-        clearButton.setLabel("Clear");
-        clearButton.addActionListener(new java.awt.event.ActionListener() {
+        portOutput.setText("port (output)");
+
+        swapPortsButton.setText("Swap ports");
+        swapPortsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearButtonActionPerformed(evt);
+                swapPortsButtonActionPerformed(evt);
             }
         });
 
@@ -142,27 +107,26 @@ public class MainJFrame extends javax.swing.JFrame  {
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(getAllObjectsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(portOutput)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(swapPortsButton)
+                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(hostLabel)
-                                                        .addComponent(portLabel))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(hostEdit, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                                        .addComponent(portEdit)))
-                                        .addComponent(closeConnectionButton, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
-                                        .addComponent(startConnectionButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(getObjectButton)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(objectCountEdit))
-                                        .addComponent(getObjectCountButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(statusLabel)
-                                        .addComponent(launchServerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(clearButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(0, 11, Short.MAX_VALUE))
+                                                        .addComponent(startClientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(statusLabel)
+                                                        .addComponent(startServerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(hostLabel)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(hostEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(portLabel)
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                                .addComponent(portInputEdit, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                                                                .addComponent(portOutputEdit, javax.swing.GroupLayout.Alignment.LEADING)))
+                                                .addGap(0, 8, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,122 +137,87 @@ public class MainJFrame extends javax.swing.JFrame  {
                                         .addComponent(hostLabel)
                                         .addComponent(hostEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(17, 17, 17)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(portLabel)
-                                        .addComponent(portEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(startConnectionButton)
+                                .addComponent(portLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(closeConnectionButton)
-                                .addGap(18, 18, 18)
+                                .addComponent(portInputEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(getObjectButton)
-                                        .addComponent(objectCountEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(portOutput)
+                                        .addComponent(swapPortsButton))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(getObjectCountButton)
+                                .addComponent(portOutputEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                                .addComponent(startClientButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(getAllObjectsButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(clearButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                                .addComponent(statusLabel)
+                                .addComponent(startServerButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(launchServerButton)
+                                .addComponent(statusLabel)
                                 .addGap(12, 12, 12))
         );
-
-        clearButton.getAccessibleContext().setAccessibleName("clearButton");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void launchServerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_launchServerButtonActionPerformed
+    private void startServerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startServerButtonActionPerformed
         String host = hostEdit.getText();
-        int port = Integer.parseInt(portEdit.getText());
-
-        Server server = new Server(s,host,port);
+        int port_in = Integer.parseInt(portInputEdit.getText());
+        int port_out = Integer.parseInt(portOutputEdit.getText());
+        Server server = new Server(s, host, port_out, port_in);
         server.start();
 
         statusLabel.setText("SERVER RUNNING");
         hostEdit.setEnabled(false);
-        portEdit.setEnabled(false);
+        portInputEdit.setEnabled(false);
+        portOutputEdit.setEnabled(false);
 
         new Thread(new Runnable() {
             public void run() {
-                while(server.isAlive()) {}
-                statusLabel.setText("CLIENT");
-                hostEdit.setEnabled(true);
-                portEdit.setEnabled(true);
+                while (server.isAlive()) {
+                }
+                statusLabel.setText("OFFLINE");
+                portInputEdit.setEnabled(true);
+                portOutputEdit.setEnabled(true);
             }
         }).start();
-    }//GEN-LAST:event_launchServerButtonActionPerformed
+    }//GEN-LAST:event_startServerButtonActionPerformed
 
-    private void startConnectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startConnectionButtonActionPerformed
+    private void startClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startClientButtonActionPerformed
         String host = hostEdit.getText();
-        int port = Integer.parseInt(portEdit.getText());
-        c = new Client(s,host,port);
+        int port_in = Integer.parseInt(portInputEdit.getText());
+        int port_out = Integer.parseInt(portOutputEdit.getText());
+        c = new Client(s, host, port_out, port_in);
         c.start();
 
-        clearButton.setEnabled(true);
-        startConnectionButton.setEnabled(false);
-        closeConnectionButton.setEnabled(true);
-        getAllObjectsButton.setEnabled(true);
-        getObjectButton.setEnabled(true);
-        getObjectCountButton.setEnabled(true);
-        objectCountEdit.setEnabled(true);
-
+        statusLabel.setText("CLIENT RUNNING");
         hostEdit.setEnabled(false);
-        portEdit.setEnabled(false);
-    }//GEN-LAST:event_startConnectionButtonActionPerformed
+        portInputEdit.setEnabled(false);
+        portOutputEdit.setEnabled(false);
+        new Thread(new Runnable() {
+            public void run() {
+                while (c.isAlive()) {
+                }
+                statusLabel.setText("OFFLINE");
+                portInputEdit.setEnabled(true);
+                portOutputEdit.setEnabled(true);
+            }
+        }).start();
+    }//GEN-LAST:event_startClientButtonActionPerformed
 
-    private void getAllObjectsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllObjectsButtonActionPerformed
-        try {
-            Protocol.QueryObjects(c.socket);
-        } catch (Exception e) { e.printStackTrace(); }
-    }//GEN-LAST:event_getAllObjectsButtonActionPerformed
-
-    private void closeConnectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeConnectionButtonActionPerformed
-        try {
-            Protocol.CloseConnection(c.socket);
-        } catch (Exception e) { e.printStackTrace(); }
-
-        clearButton.setEnabled(false);
-        startConnectionButton.setEnabled(true);
-        closeConnectionButton.setEnabled(false);
-        getAllObjectsButton.setEnabled(false);
-        getObjectButton.setEnabled(false);
-        getObjectCountButton.setEnabled(false);
-        objectCountEdit.setEnabled(false);
-
-        hostEdit.setEnabled(true);
-        portEdit.setEnabled(true);
-    }//GEN-LAST:event_closeConnectionButtonActionPerformed
-
-    private void getObjectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getObjectButtonActionPerformed
-        int count = Integer.parseInt(objectCountEdit.getText());
-        try {
-            Protocol.QueryObject(c.socket, count);
-        } catch (Exception e) { e.printStackTrace(); }
-
-    }//GEN-LAST:event_getObjectButtonActionPerformed
-
-    private void getObjectCountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getObjectCountButtonActionPerformed
-        try {
-            Protocol.QueryListSize(c.socket);
-        } catch (Exception e) { e.printStackTrace(); }
-
-    }//GEN-LAST:event_getObjectCountButtonActionPerformed
-
-    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        try {
-            Protocol.ClearList(c.socket);
-        } catch (Exception e) { e.printStackTrace(); }
-    }//GEN-LAST:event_clearButtonActionPerformed
+    private void swapPortsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_swapPortsButtonActionPerformed
+        String temp = portInputEdit.getText();
+        portInputEdit.setText(portOutputEdit.getText());
+        portOutputEdit.setText(temp);
+    }//GEN-LAST:event_swapPortsButtonActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Windows".equals(info.getName())) {
@@ -310,28 +239,24 @@ public class MainJFrame extends javax.swing.JFrame  {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                MainJFrame f =  new MainJFrame();
+                MainJFrame f = new MainJFrame();
                 f.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton clearButton;
-    private javax.swing.JButton closeConnectionButton;
-    private javax.swing.JButton getAllObjectsButton;
-    private javax.swing.JButton getObjectButton;
-    private javax.swing.JButton getObjectCountButton;
     private javax.swing.JTextField hostEdit;
     private javax.swing.JLabel hostLabel;
-    private javax.swing.JButton launchServerButton;
-    private javax.swing.JTextField objectCountEdit;
     private javax.swing.JPanel panel;
-    private javax.swing.JTextField portEdit;
+    private javax.swing.JTextField portInputEdit;
     private javax.swing.JLabel portLabel;
-    private javax.swing.JButton startConnectionButton;
+    private javax.swing.JLabel portOutput;
+    private javax.swing.JTextField portOutputEdit;
+    private javax.swing.JButton startClientButton;
+    private javax.swing.JButton startServerButton;
     private javax.swing.JLabel statusLabel;
+    private javax.swing.JButton swapPortsButton;
     // End of variables declaration//GEN-END:variables
-
 
 }

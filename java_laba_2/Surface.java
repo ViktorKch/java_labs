@@ -3,13 +3,15 @@ package java_laba_2;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
+import javax.swing.Timer;
 
 public class Surface extends javax.swing.JPanel implements MouseListener, KeyListener, ActionListener {
 
@@ -20,7 +22,7 @@ public class Surface extends javax.swing.JPanel implements MouseListener, KeyLis
         timer.start();
         this.setBackground(new Color(255, 255, 255));
     }
-    public ArrayList<Drawable> objects = new ArrayList<>();
+    public  CopyOnWriteArrayList<Drawable> objects = new  CopyOnWriteArrayList<>();
     private long prev_t = 0;
 
     void DrawObjects(Graphics g)
@@ -221,7 +223,7 @@ public class Surface extends javax.swing.JPanel implements MouseListener, KeyLis
         System.out.println("DESERIALIZING");
         try {
             ObjectInputStream oin = new ObjectInputStream(new FileInputStream(filename));
-            objects = (ArrayList<Drawable>)oin.readObject();
+            objects = ( CopyOnWriteArrayList<Drawable>)oin.readObject();
         }
         catch (Exception e) { e.printStackTrace(); }
     }
@@ -242,7 +244,7 @@ public class Surface extends javax.swing.JPanel implements MouseListener, KeyLis
         System.out.println("DESERIALIZING FROM XML");
         try {
             XStream x = new XStream(new DomDriver());
-            objects = (ArrayList<Drawable>)x.fromXML(new File(filename));
+            objects = ( CopyOnWriteArrayList<Drawable>)x.fromXML(new File(filename));
         }
         catch (Exception e) { e.printStackTrace(); }
     }
