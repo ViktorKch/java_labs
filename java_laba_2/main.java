@@ -14,6 +14,7 @@ public class main {
         frame.setSize(new Dimension(800, 600));
         frame.add(s);
         frame.addMouseListener(s);
+        frame.addKeyListener(s);
         frame.addWindowListener(new HelpListener());
 
         while (!s.isExit())

@@ -1,15 +1,19 @@
 
 package java_laba_2;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.util.ArrayList;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Random;
 
-public class Surface extends javax.swing.JPanel implements MouseListener {
+public class Surface extends javax.swing.JPanel implements MouseListener, KeyListener {
 
     private ArrayList<Drawable> objects = new ArrayList<>();
     public long timestep = 1000/60;
@@ -107,6 +111,139 @@ public class Surface extends javax.swing.JPanel implements MouseListener {
     void Update() { repaint(); }
     boolean isExit() { return false;}
 
+    void WriteText(String filename)
+    {
+        System.out.println("SAVING AS TEXT");
+        try {
+
+            BufferedWriter bwriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "UTF-8"));
+            int count = objects.size();
+            bwriter.write(Integer.toString(count) + '\n');
+            for (Drawable o : objects)
+            {
+                String name = o.getClass().getName();
+                bwriter.write(name + '\n');
+                o.writeText(bwriter);
+            }
+            bwriter.flush();
+            bwriter.close();
+        }
+        catch (IOException e) { e.printStackTrace(); }
+    }
+
+    void ReadText(String filename)
+    {
+        System.out.println("LOADING FROM TEXT");
+        try {
+            objects.clear();
+            BufferedReader breader = new BufferedReader(new InputStreamReader(new FileInputStream(filename), "UTF-8"));
+            String scount = breader.readLine();
+            int count = Integer.parseInt(scount);
+            System.out.println(Integer.toString(count));
+
+            for (int i = 0; i < count; i++)
+            {
+                String name = breader.readLine();
+
+                Class<?> clazz = Class.forName(name);
+                Drawable o = (Drawable)clazz.newInstance();
+                o.readText(breader);
+                objects.add(o);
+            }
+
+            breader.close();
+        }
+        catch (Exception e) { e.printStackTrace(); }
+
+    }
+
+    void WriteBinary(String filename)
+    {
+        System.out.println("SAVING AS BINARY");
+
+        try {
+            DataOutputStream dos = new DataOutputStream(new FileOutputStream(filename));
+            int count = objects.size();
+            dos.writeInt(count);
+            for (Drawable o : objects)
+            {
+                String name = o.getClass().getName();
+                dos.writeInt(name.length());
+                dos.writeChars(name);
+                o.writeBinary(dos);
+            }
+            dos.close();
+        }
+        catch (Exception e) { e.printStackTrace(); }
+    }
+
+    void ReadBinary(String filename)
+    {
+        System.out.println("LOADING FROM BINARY");
+        try {
+            objects.clear();
+            DataInputStream dis = new DataInputStream(new FileInputStream(filename));
+            int count = dis.readInt();
+
+            for (int i = 0; i < count; i++)
+            {
+                int nameLength = dis.readInt();
+                StringBuilder sb  = new StringBuilder();
+                for (int j = 0; j < nameLength; j++)
+                    sb.append(dis.readChar());
+                String name = sb.toString();
+
+                Class<?> clazz = Class.forName(name);
+                Drawable o = (Drawable)clazz.newInstance();
+                o.readBinary(dis);
+                objects.add(o);
+            }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+    }
+
+    void Serialize(String filename)
+    {
+        System.out.println("SERIALIZING");
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
+            oos.writeObject(objects);
+            oos.flush();
+            oos.close();
+        }
+        catch (Exception e) { e.printStackTrace(); }
+    }
+
+    void Deserialize(String filename)
+    {
+        System.out.println("DESERIALIZING");
+        try {
+            ObjectInputStream oin = new ObjectInputStream(new FileInputStream(filename));
+            objects = (ArrayList<Drawable>)oin.readObject();
+        }
+        catch (Exception e) { e.printStackTrace(); }
+    }
+
+    void SerializeXML(String filename)
+    {
+        System.out.println("SERIALIZING TO XML");
+        try {
+            XStream x = new XStream(new DomDriver());
+            x.toXML(objects, new FileOutputStream(new File(filename)));
+        }
+        catch (Exception e) { e.printStackTrace(); }
+
+    }
+
+    void DeserializeXML(String filename)
+    {
+        System.out.println("DESERIALIZING FROM XML");
+        try {
+            XStream x = new XStream(new DomDriver());
+            objects = (ArrayList<Drawable>)x.fromXML(new File(filename));
+        }
+        catch (Exception e) { e.printStackTrace(); }
+    }
     @Override
     public void mousePressed(MouseEvent e) {}
 
@@ -118,5 +255,26 @@ public class Surface extends javax.swing.JPanel implements MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int code = e.getKeyCode();
+        if (code == KeyEvent.VK_F1 ) { WriteText("text.txt"); }
+        else if(code ==KeyEvent.VK_F2 ) { ReadText("text.txt"); }
+        else if(code ==KeyEvent.VK_F3) { WriteBinary("bin.dat"); }
+        else if(code ==KeyEvent.VK_F4) { ReadBinary("bin.dat"); }
+        else if(code ==KeyEvent.VK_F5) { Serialize("ser.dat"); }
+        else if(code ==KeyEvent.VK_F6) { Deserialize("ser.dat"); }
+        else if(code ==KeyEvent.VK_F7) { SerializeXML("ser.xml"); }
+        else if(code ==KeyEvent.VK_F8) { DeserializeXML("ser.xml"); }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
 
 }

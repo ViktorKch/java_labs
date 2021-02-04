@@ -3,8 +3,14 @@ package java_laba_2;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
 
-public class SmileHappy extends Drawable{
+public class SmileHappy extends Drawable implements Serializable {
 
     public SmileHappy() { color = Color.YELLOW;}
 
@@ -38,4 +44,39 @@ public class SmileHappy extends Drawable{
 
     float cY = 0;
     float x = 0.0f;
+
+    @Override
+    void writeText(BufferedWriter bwriter) throws IOException {
+        bwriter.write(Float.toString(x) + '\n');
+        bwriter.write(Float.toString(centerX)+ '\n');
+        bwriter.write(Float.toString(centerY)+ '\n');
+    }
+
+    @Override
+    void readText(BufferedReader breader) throws IOException {
+
+        String str_x = breader.readLine();
+        String str_centerX = breader.readLine();
+        String str_centerY = breader.readLine();
+        x = Float.parseFloat(str_x);
+        centerX = Float.parseFloat(str_centerX);
+        centerY = Float.parseFloat(str_centerY);
+    }
+
+    @Override
+    void writeBinary(DataOutputStream dos) throws IOException {
+        dos.writeFloat(x);
+        dos.writeFloat(centerX);
+        dos.writeFloat(centerY);
+
+    }
+
+    @Override
+    void readBinary(DataInputStream dis) throws IOException {
+        x = dis.readFloat();
+        centerX = dis.readFloat();
+        centerY = dis.readFloat();
+    }
+
+
 }

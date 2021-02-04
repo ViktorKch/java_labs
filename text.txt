@@ -1,0 +1,13 @@
+3
+java_laba_2.SmileHappy
+2.3810017
+243.0
+189.0
+java_laba_2.SmileUnhappy
+2.1370013
+387.0
+302.0
+java_laba_2.SmileHappy
+1.0389993
+373.0
+92.0

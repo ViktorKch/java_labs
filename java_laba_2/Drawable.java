@@ -4,10 +4,22 @@ package java_laba_2;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
 
-abstract public class Drawable {
+abstract public class Drawable implements Serializable {
 
     public abstract void Draw(Graphics2D g, float t);
+
+    abstract void readText(BufferedReader breader) throws IOException;
+    abstract void writeText(BufferedWriter bwriter) throws IOException;
+
+    abstract void writeBinary(DataOutputStream dos) throws IOException;
+    abstract void readBinary(DataInputStream dis) throws IOException;
 
     public boolean isInside(float x, float y)
     {
