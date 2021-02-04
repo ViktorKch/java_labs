@@ -2,40 +2,46 @@
 package java_laba_2;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 public class SmileUnhappy extends Drawable{
-    
+
     public SmileUnhappy() { color = Color.RED;}
-    
+    float cY = 0;
+    float x = 0.0f;
     @Override
-    public void Draw(Graphics g) 
+    public void Draw(Graphics2D g, float t)
     {
-        Graphics2D g2d = (Graphics2D) g;
-        
+        Graphics2D g2d = g;
+
+        animH = rectHeight;
+        animW = rectWidth;
+        x += t;
+        g2d.setTransform(AffineTransform.getRotateInstance(x,centerX,centerY));
+
         g2d.fillOval((int)rectX1(), (int)rectY1(), (int)rectWidth, (int)rectHeight);
-        
+
         Color c = (Color)g2d.getPaint();
         g2d.setPaint(Color.BLACK);
-        
+
         float margin = 0.2f;
         // рот
-        g2d.drawArc((int)(rectX1()+ rectWidth*margin), (int)(centerY+ rectHeight*margin), 
+        g2d.drawArc((int)(rectX1()+ rectWidth*margin), (int)(centerY+ rectHeight*margin),
                 (int)(rectWidth*(1.0f-2*margin)), (int)(rectHeight*(1.0f-2*margin)/2), 30, 120);
-        
+
         // глаза
-        g2d.drawLine((int)(rectX1()+ 1.5*rectWidth*margin), 
-                (int)(rectY1()+ rectHeight*margin), 
-                (int)(rectX1()+ 1.5*rectWidth*margin), 
+        g2d.drawLine((int)(rectX1()+ 1.5*rectWidth*margin),
+                (int)(rectY1()+ rectHeight*margin),
+                (int)(rectX1()+ 1.5*rectWidth*margin),
                 (int)(rectY1()+ 2*rectHeight*margin));
-        g2d.drawLine((int)(rectX1()+ rectWidth *(1-1.5*margin)) , 
-                (int)(rectY1()+ rectHeight*margin), 
-                (int)(rectX1()+ rectWidth *(1-1.5*margin)), 
+        g2d.drawLine((int)(rectX1()+ rectWidth *(1-1.5*margin)) ,
+                (int)(rectY1()+ rectHeight*margin),
+                (int)(rectX1()+ rectWidth *(1-1.5*margin)),
                 (int)(rectY1()+ 2*rectHeight*margin));
         g2d.setPaint(c);
 
     }
-  
+
 
 }
